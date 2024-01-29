@@ -9,7 +9,7 @@
     {
       "source": "/api/(.*)",
 
-      "destination": "/backend/api/index.js"
+      "destination": "/api/index.js"
     },
 
     { "source": "/(.*)", "destination": "/" }
