@@ -1,0 +1,22 @@
+{
+  "name": "ampeconvert",
+  "version": "1.0.0",
+  "description": "Image converting and compressing website built with react,tailwind,express,sharp and aws s3",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd backend && nodemon app.js\" \"cd frontend && npm run dev\"",
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start:prod": "cd backend && node app.js"
+  },
+  "keywords": [
+    "image convert,",
+    "resize",
+    "compress"
+  ],
+  "author": "Aleksandar Atanasovski",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
