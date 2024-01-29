@@ -4,11 +4,6 @@ import sharp from 'sharp'
 import cors from 'cors'
 import 'dotenv/config'
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import path from 'path'
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const app = express()
 const upload = multer()
@@ -108,20 +103,6 @@ app.post('/api/v1/upload', upload.array('files'), async (req, res) => {
     res.status(500).json({ message: 'Error converting image' })
   }
 })
-
-if (process.env.NODE_ENV === 'production') {
-  const frontendDistPath = path.join(__dirname, '..', 'frontend', 'dist')
-
-  app.use(express.static(frontendDistPath))
-
-  app.get('*', (req, res) =>
-    res.sendFile(path.join(frontendDistPath, 'index.html')),
-  )
-} else {
-  app.get('/', (req, res) => {
-    res.send('API is running....')
-  })
-}
 
 app.listen(process.env.PORT || 3000, () =>
   console.log('Server listening on port 3000'),
