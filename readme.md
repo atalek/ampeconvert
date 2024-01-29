@@ -2,8 +2,8 @@
 
 ![Landing page](https://res.cloudinary.com/dkofkuquf/image/upload/v1706538303/nuxtshop/xvn4cgbumnqtttp8gchh.png)
 
-ampeConvert is a versatile image converter built with **React**, **Tailwind
-CSS**, **Express** , **sharp** , and **AWS S3**.
+ampeConvert is an image converter built with **React**, **Tailwind CSS**,
+**Express** , **sharp** , and **AWS S3**.
 
 ## Features
 
