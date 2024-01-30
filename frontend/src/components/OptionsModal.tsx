@@ -56,11 +56,11 @@ function OptionsModal({
       </button>
       {showModal ? (
         <div className='fixed inset-0 z-40' onClick={() => setShowModal(false)}>
-          <div className='justify-center items-center flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-50 outline-none focus:outline-none'>
-            <div className='relative my-6 mx-auto max-w-4xl w-full'>
+          <div className='min-h-screen flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-50 '>
+            <div className=' my-6 mx-auto max-w-4xl w-full'>
               <div
                 onClick={event => event.stopPropagation()}
-                className='border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none'>
+                className='border-0 rounded-lg shadow-lg  flex flex-col w-full bg-white '>
                 <div className='flex items-start justify-between p-5 border-b border-solid  rounded-t mt-2'>
                   <h3 className='text-3xl font-semibold'>Options</h3>
                   <button
@@ -69,17 +69,18 @@ function OptionsModal({
                     X
                   </button>
                 </div>
-                <div className='relative p-2 border-b border-solid'>
+
+                <div className=' p-2 border-b border-solid'>
                   <div className='grid items-center justify-center md:grid-cols-2 px-4'>
-                    <div className='flex md:justify-between pt-2 pb-6 px-4 '>
-                      <p className='text-lg text-slate-600 pt-3 w-[53px]'>
+                    <div className='flex flex-col md:flex-row md:justify-between pt-2 pb-6 px-4 '>
+                      <p className='text-lg text-slate-600 pt-3 w-1/4 ml-3 md:ml-0'>
                         Width
                       </p>
                       <div className='flex flex-col px-3'>
                         <input
                           id='width'
                           type='number'
-                          className='p-3 flex md:w-[260px] border rounded mb-1'
+                          className='p-3 w-full md:w-[260px] border rounded mb-1'
                           value={width}
                           onChange={handleWidthChange}
                         />
@@ -90,15 +91,15 @@ function OptionsModal({
                         </label>
                       </div>
                     </div>
-                    <div className='flex md:justify-between pt-2 pb-6 px-4'>
-                      <p className='text-lg text-slate-600 pt-3 w-[53px]'>
+                    <div className='flex flex-col md:flex-row md:justify-between pt-2 pb-6 px-4'>
+                      <p className='text-lg text-slate-600 pt-3 w-1/4 ml-3 md:ml-0'>
                         Height
                       </p>
                       <div className='flex flex-col px-3'>
                         <input
                           id='height'
                           type='number'
-                          className='p-3 flex md:w-[260px] border rounded mb-1'
+                          className='p-3 w-full md:w-[260px] border rounded mb-1'
                           value={height}
                           onChange={handleHeightChange}
                         />
@@ -111,10 +112,11 @@ function OptionsModal({
                     </div>
                   </div>
                 </div>
+
                 <div className='p-2 border-b border-solid'>
-                  <div className='grid md:grid-cols-2  md:px-4'>
-                    <div className='flex md:justify-between pt-2 pb-6 md:px-4  mx-auto md:mx-0'>
-                      <p className='text-lg text-slate-600 pt-3 w-[53px] mr-2'>
+                  <div className='grid items-center justify-center md:grid-cols-2 px-4'>
+                    <div className='flex flex-col md:flex-row md:justify-between pt-2 pb-6 px-4 '>
+                      <p className='text-lg text-slate-600 pt-3 w-1/4 mr-2'>
                         Fit
                       </p>
                       <div className='flex flex-col md:px-3'>
@@ -122,7 +124,7 @@ function OptionsModal({
                           value={fit}
                           onChange={handleFitChange}
                           id='select'
-                          className='p-3 flex w-[320px] md:w-[260px]  border rounded mb-1 bg-white'>
+                          className='p-3 flex w-full max-w-[320px] md:w-[260px] border rounded mb-1 bg-white'>
                           <option value={Fit.COVER}>cover</option>
                           <option value={Fit.CONTAIN}>contain</option>
                           <option value={Fit.FILL}>fill</option>
@@ -131,7 +133,7 @@ function OptionsModal({
                         </select>
                         <label
                           htmlFor='fit'
-                          className='text-xs text-slate-400 w-[320px] md:w-[260px]'>
+                          className='text-xs text-slate-400 w-full max-w-[320px] md:w-[260px]'>
                           Sets the mode of resizing the image.
                           <br />
                           <span className='text-slate-800'>“Cover”:</span>
@@ -158,22 +160,25 @@ function OptionsModal({
                         </label>
                       </div>
                     </div>
-                    <div className='flex md:mx-0 mx-auto md:justify-between pt-2 pb-6 md:px-4'>
-                      <p className='text-lg text-slate-600 pt-3 w-[53px]'>
+
+                    <div className='flex flex-col md:flex-row pt-2 pb-6 md:px-4 justify-start '>
+                      <p className='text-lg text-slate-600 pt-3 w-1/4 ml-4 md:ml-0'>
                         Strip
                       </p>
-                      <div className='flex  flex-col px-3'>
-                        <div className='w-[320px]  md:w-[260px]'>
+
+                      <div className='flex flex-col px-3 ml-1 md:ml-0'>
+                        <div className='max-w-[320px] md:w-[260px]'>
                           <div className='flex flex-row items-center '>
                             <label
                               htmlFor='stripChoice1'
-                              className='w-[23px] mr-6'>
+                              className='w-1/4 mr-6'>
                               Yes
                             </label>
+
                             <input
                               type='radio'
                               id='stripChoice1'
-                              name='strop'
+                              name='strip'
                               value={Strip.YES}
                               checked={strip === Strip.YES}
                               onChange={handleStripChange}
@@ -182,15 +187,15 @@ function OptionsModal({
 
                           <div className='flex flex-row items-center'>
                             <label
-                              htmlFor='contactChoice2'
-                              className='w-[23px] mr-6'>
+                              htmlFor='stripChoice2'
+                              className='w-1/4 mr-6'>
                               No
                             </label>
 
                             <input
                               type='radio'
-                              id='contactChoice2'
-                              name='strop'
+                              id='stripChoice2'
+                              name='strip'
                               value={Strip.NO}
                               checked={strip === Strip.NO}
                               onChange={handleStripChange}
@@ -205,25 +210,24 @@ function OptionsModal({
                     </div>
                   </div>
                 </div>
-
-                <div className='flex items-center justify-between p-6 border-t border-solid border-blueGray-200 rounded-b'>
+                <div className='flex items-center md:justify-between justify-center gap-4 flex-wrap  p-6 border-t border-solid rounded-b'>
                   <button
                     onClick={() => {
                       applySettingsToAllFiles(file)
                       setShowModal(false)
                     }}
-                    className='bg-green-600 hover:bg-green-800 text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1'>
+                    className='bg-green-600 hover:bg-green-800 text-white font-bold uppercase md:text-sm text-xs px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1'>
                     Apply to all
                   </button>
-                  <div className='flex items-center '>
+                  <div className='flex items-center gap-6'>
                     <button
-                      className='text-red-500 hover:bg-red-600 hover:text-white hover:rounded background-transparent font-bold uppercase px-6 py-3 text-sm mr-1 mb-1'
+                      className='text-red-500 hover:bg-red-600 hover:text-white hover:rounded background-transparent font-bold uppercase px-6 py-3 md:text-sm text-xs mr-1 mb-1'
                       type='button'
                       onClick={() => setShowModal(false)}>
                       Close
                     </button>
                     <button
-                      className='bg-green-600 hover:bg-green-800 text-white  font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1 '
+                      className='bg-green-600 hover:bg-green-800 text-white  font-bold uppercase md:text-sm text-xs px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1 '
                       type='button'
                       onClick={() => setShowModal(false)}>
                       Okay
