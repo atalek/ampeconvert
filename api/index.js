@@ -2,12 +2,23 @@ import express from 'express'
 import multer from 'multer'
 import sharp from 'sharp'
 import cors from 'cors'
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client } from '@aws-sdk/client-s3'
 import dotenv from 'dotenv'
+import stream from 'stream'
+import { Upload } from '@aws-sdk/lib-storage'
 
 dotenv.config()
 
 const app = express()
+
+const s3Client = new S3Client({
+  region: 'eu-central-1',
+  credentials: {
+    accessKeyId: process.env.AWS_PK,
+    secretAccessKey: process.env.AWS_SK,
+  },
+})
+
 const upload = multer({ storage: multer.memoryStorage() })
 
 app.use(
@@ -17,14 +28,6 @@ app.use(
     credentials: true,
   }),
 )
-
-const s3Client = new S3Client({
-  region: 'eu-central-1',
-  credentials: {
-    accessKeyId: process.env.AWS_PK,
-    secretAccessKey: process.env.AWS_SK,
-  },
-})
 
 app.post('/api/v1/upload', upload.array('files'), async (req, res) => {
   try {
@@ -56,7 +59,25 @@ app.post('/api/v1/upload', upload.array('files'), async (req, res) => {
         const fileName = file.originalname.split('.')[0]
         const imageName = fileName + '.' + format
 
-        const convertedImageBuffer = await sharp(file.buffer)
+        const passThrough = new stream.PassThrough()
+
+        const upload = new Upload({
+          client: s3Client,
+          params: {
+            Bucket: bucket,
+            Key: imageName,
+            ACL: 'public-read',
+            Body: passThrough,
+          },
+        })
+
+        let streamedBytes = 0
+
+        passThrough.on('data', chunk => {
+          streamedBytes += chunk.length
+        })
+
+        sharp(file.buffer)
           .resize(
             width === '' ? null : parseInt(width),
             height === '' ? null : parseInt(height),
@@ -64,32 +85,20 @@ app.post('/api/v1/upload', upload.array('files'), async (req, res) => {
           )
           .toFormat(format)
           .withMetadata(strip === 'yes' ? {} : undefined)
-          .toBuffer()
+          .pipe(passThrough)
 
-        const convertedImageSizeInKB = convertedImageBuffer.length / 1024
+        await upload.done()
 
-        try {
-          await s3Client.send(
-            new PutObjectCommand({
-              Bucket: bucket,
-              Key: imageName,
-              ACL: 'public-read',
-              ContentType: file.type,
-              Body: convertedImageBuffer,
-            }),
-          )
-          console.log(`Image uploaded to S3: ${imageName}`)
-        } catch (error) {
-          console.error(`Error uploading to S3: ${error.message}`)
-          throw error
-        }
+        const estimatedSizeInKB = streamedBytes / 1024
+
+        console.log(`Image uploaded to S3: ${imageName}`)
 
         return {
           name: file.originalname,
           imageUrl: `${bucketUrl}/${imageName}`,
           newName: imageName,
           newFormat: format,
-          newSize: convertedImageSizeInKB,
+          newSize: estimatedSizeInKB,
         }
       }),
     )

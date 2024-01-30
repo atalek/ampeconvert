@@ -29,7 +29,7 @@ function ImageModal({
                   <p className='left-0 lg:text-lg md:text-md text-sm text-slate-800 truncate'>
                     {imageName}
                   </p>
-                  <div>
+                  <div className='inline-flex'>
                     <button
                       className='text-red-500 hover:bg-red-600 hover:text-white hover:rounded  background-transparent font-bold uppercase px-6 py-3  text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
                       type='button'
