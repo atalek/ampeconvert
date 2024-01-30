@@ -25,34 +25,49 @@ function HomeScreen() {
     const imageData = event.target.files
 
     if (imageData) {
+      const newFiles = Array.from(imageData).map(file => ({
+        file,
+        name: file.name,
+        format: globalFormat,
+        finished: false,
+        width: '',
+        height: '',
+        fit: Fit.COVER,
+        strip: Strip.NO,
+      }))
+
+      setFiles(prevFiles => [...prevFiles, ...newFiles])
+    }
+
+    /* if you want to limiting size 
+    if (imageData) {
       const newFiles = Array.from(imageData).filter(file => {
-        if (file.size <= 4 * 1024 * 1024) {
+        if (file.size <= 10 * 1024 * 1024) {
           return true
         } else {
-          setError('Image too large (maximum allowed 4 megabytes)')
+          setError('Image too large (maximum allowed 10 megabytes)')
 
           setTimeout(() => {
             setError('')
           }, 8000)
 
           return false
-        }
-      })
-
-      setFiles(prevFiles => [
-        ...prevFiles,
-        ...newFiles.map(file => ({
-          file,
-          name: file.name,
-          format: globalFormat,
-          finished: false,
-          width: '',
-          height: '',
-          fit: Fit.COVER,
-          strip: Strip.NO,
-        })),
-      ])
-    }
+				}
+				
+			})
+			setFiles(prevFiles => [
+				...prevFiles,
+				...newFiles.map(file => ({
+					file,
+					name: file.name,
+					format: globalFormat,
+					finished: false,
+					width: '',
+					height: '',
+					fit: Fit.COVER,
+					strip: Strip.NO,
+				})),
+			]) */
   }
 
   function changeFileFormat(fileName: string, newFormat: string) {
@@ -193,7 +208,7 @@ function HomeScreen() {
         </div>
       </div>
       {error && (
-        <p className='text-red-600 text-lg font-semibold my-4 text-center'>
+        <p className='text-red-600 text-md font-semibold my-4 text-center'>
           {error}
         </p>
       )}
