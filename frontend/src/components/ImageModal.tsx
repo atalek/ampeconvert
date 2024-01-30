@@ -17,7 +17,7 @@ function ImageModal({
       </button>
       {showImage ? (
         <div className='fixed inset-0 z-40' onClick={() => setShowImage(false)}>
-          <div className='justify-center items-center flex min-h-screen overflow-x-hidden overflow-y-scroll fixed inset-0 z-50 '>
+          <div className='min-h-screen flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-50  '>
             <div className=' my-6 mx-auto max-w-4xl w-full'>
               <div
                 onClick={event => event.stopPropagation()}
