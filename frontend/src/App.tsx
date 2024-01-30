@@ -4,7 +4,9 @@ import ReactGA from 'react-ga4'
 import HomeScreen from './views/HomeScreen'
 import Layout from './components/Layout'
 
-ReactGA.initialize(import.meta.env.VITE_GTAG_ID)
+if (import.meta.env.NODE_ENV === 'production') {
+  ReactGA.initialize(import.meta.env.VITE_GTAG_ID)
+}
 
 function App() {
   return (
