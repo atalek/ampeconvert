@@ -17,7 +17,7 @@ function ImageModal({
       </button>
       {showImage ? (
         <div className='fixed inset-0 z-40' onClick={() => setShowImage(false)}>
-          <div className='min-h-screen flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-50  '>
+          <div className=' flex min-h-svh overflow-x-hidden overflow-y-scroll fixed inset-0 z-50  '>
             <div className=' my-6 mx-auto max-w-4xl w-full'>
               <div
                 onClick={event => event.stopPropagation()}
@@ -43,6 +43,7 @@ function ImageModal({
                       className='bg-green-600 hover:bg-green-800 text-white  font-bold uppercase md:text-sm text-xs px-6 py-3 rounded shadow hover:shadow-lg  mr-1 mb-1  '
                       type='button'
                       onClick={() => setShowImage(prev => !prev)}>
+                      <i className='fa-solid fa-cloud-arrow-down mr-2'></i>
                       Download
                     </a>
                   </div>
