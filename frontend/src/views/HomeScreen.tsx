@@ -267,7 +267,7 @@ function HomeScreen() {
                     <button
                       className='bg-green-600 hover:bg-green-800 text-white inline-flex items-center justify-center text-center font-bold  px-6 py-3 rounded shadow hover:shadow-lg outline-none md:w-48 w-full  '
                       onClick={downloadAll}>
-                      <i className='fa-solid fa-download mr-2'></i>
+                      <i className='fa-solid fa-cloud-arrow-down mr-2'></i>
                       Download all
                     </button>
                   </>
@@ -276,13 +276,13 @@ function HomeScreen() {
             )}
             {files.some(file => !file.finished) && (
               <button
-                className='inline-flex items-center justify-center rounded  bg-red-700 hover:bg-red-800 px-8 py-4 text-center font-semibold text-white md:w-36 w-full disabled:bg-red-900 disabled:cursor-not-allowed '
+                className='inline-flex items-center justify-center rounded  bg-red-700 hover:bg-red-800 px-9 py-4 text-center font-semibold text-white md:w-36 w-full disabled:bg-red-900 disabled:cursor-not-allowed '
                 disabled={isLoading}
                 onClick={uploadFiles}>
                 <i className='fa-solid fa-arrows-rotate mr-2'></i>
                 {isLoading ? (
                   <div className='flex items-center  justify-center gap-1'>
-                    <span>Converting</span>
+                    <span>Processing</span>
                     <Loader />
                   </div>
                 ) : (

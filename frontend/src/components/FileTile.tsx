@@ -82,7 +82,7 @@ function FileTile({
       </div>
       <div className='flex flex-row justify-start md:w-[100px]'>
         {!file.finished && isLoading && (
-          <span className='bg-orange-400 p-1 text-sm  rounded'>CONVERTING</span>
+          <span className='bg-orange-400 p-1 text-sm  rounded'>PROCESSING</span>
         )}
         {file.finished && (
           <ImageModal
