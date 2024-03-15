@@ -1,5 +1,28 @@
 import { useEffect, useState } from 'react'
 import { FileEntry, Fit, Strip } from '../types'
+import { motion, AnimatePresence } from 'framer-motion'
+
+const dropIn = {
+  hidden: {
+    y: '-5vh',
+    opacity: 0,
+  },
+  visible: {
+    y: '0',
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+      type: 'spring',
+      damping: 35,
+      stiffness: 300,
+    },
+  },
+  exit: {
+    y: '-45vh',
+    opacity: 0,
+    duration: 0.1,
+  },
+}
 
 function OptionsModal({
   file,
@@ -54,188 +77,203 @@ function OptionsModal({
         onClick={() => setShowModal(true)}>
         <i className='fa-solid fa-wrench'></i>
       </button>
-      {showModal ? (
-        <div className='fixed inset-0 z-40' onClick={() => setShowModal(false)}>
-          <div className='justify-center items-center flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-50 outline-none focus:outline-none'>
-            <div className='relative my-6 mx-auto max-w-4xl w-full'>
-              <div
-                onClick={event => event.stopPropagation()}
-                className='border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none'>
-                <div className='flex items-start justify-between p-5 border-b border-solid  rounded-t mt-2'>
-                  <h3 className='text-3xl font-semibold'>Options</h3>
-                  <button
-                    className='border px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white'
-                    onClick={() => setShowModal(false)}>
-                    X
-                  </button>
-                </div>
-                <div className='relative p-2 border-b border-solid'>
-                  <div className='grid items-center justify-center md:grid-cols-2 px-4'>
-                    <div className='flex md:justify-between pt-2 pb-6 px-4 '>
-                      <p className='text-lg text-slate-600 pt-3 w-[53px]'>
-                        Width
-                      </p>
-                      <div className='flex flex-col px-3'>
-                        <input
-                          id='width'
-                          type='number'
-                          className='p-3 flex md:w-[260px] border rounded mb-1'
-                          value={width}
-                          onChange={handleWidthChange}
-                        />
-                        <label
-                          htmlFor='width'
-                          className='text-sm text-slate-400'>
-                          Output width in pixels.
-                        </label>
-                      </div>
-                    </div>
-                    <div className='flex md:justify-between pt-2 pb-6 px-4'>
-                      <p className='text-lg text-slate-600 pt-3 w-[53px]'>
-                        Height
-                      </p>
-                      <div className='flex flex-col px-3'>
-                        <input
-                          id='height'
-                          type='number'
-                          className='p-3 flex md:w-[260px] border rounded mb-1'
-                          value={height}
-                          onChange={handleHeightChange}
-                        />
-                        <label
-                          htmlFor='height'
-                          className='text-sm text-slate-400'>
-                          Output height in pixels.
-                        </label>
-                      </div>
-                    </div>
+      <AnimatePresence initial={false} mode='wait'>
+        {showModal ? (
+          <motion.div
+            key='backdrop'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className=' fixed inset-0 z-40'
+            onClick={() => setShowModal(false)}>
+            <motion.div
+              key='modal'
+              variants={dropIn}
+              initial='hidden'
+              animate='visible'
+              exit='exit'
+              className=' justify-center items-center flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-50 outline-none focus:outline-none'>
+              <div className='relative my-6 mx-auto max-w-4xl w-full'>
+                <div
+                  onClick={event => event.stopPropagation()}
+                  className='border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none'>
+                  <div className='flex items-start justify-between p-5 border-b border-solid  rounded-t mt-2'>
+                    <h3 className='text-3xl font-semibold'>Options</h3>
+                    <button
+                      className='border px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white'
+                      onClick={() => setShowModal(false)}>
+                      X
+                    </button>
                   </div>
-                </div>
-                <div className='p-2 border-b border-solid'>
-                  <div className='grid md:grid-cols-2  md:px-4'>
-                    <div className='flex md:justify-between pt-2 pb-6 md:px-4  mx-auto md:mx-0'>
-                      <p className='text-lg text-slate-600 pt-3 w-[53px] mr-2'>
-                        Fit
-                      </p>
-                      <div className='flex flex-col md:px-3'>
-                        <select
-                          value={fit}
-                          onChange={handleFitChange}
-                          id='select'
-                          className='p-3 flex w-[320px] md:w-[260px]  border rounded mb-1 bg-white'>
-                          <option value={Fit.COVER}>cover</option>
-                          <option value={Fit.CONTAIN}>contain</option>
-                          <option value={Fit.FILL}>fill</option>
-                          <option value={Fit.INSIDE}>inside</option>
-                          <option value={Fit.OUTSIDE}>outside</option>
-                        </select>
-                        <label
-                          htmlFor='fit'
-                          className='text-xs text-slate-400 w-[320px] md:w-[260px]'>
-                          Sets the mode of resizing the image.
-                          <br />
-                          <span className='text-slate-800'>“Cover”:</span>
-                          Preserving aspect ratio, attempt to ensure the image
-                          covers both provided dimensions by cropping/clipping
-                          to fit. <br />
-                          <span className='text-slate-800'>“Contain”:</span>
-                          Preserving aspect ratio, contain within both provided
-                          dimensions using "letterboxing" where necessary.
-                          <br />
-                          <span className='text-slate-800'>“Fill”: </span>
-                          Ignore the aspect ratio of the input and stretch to
-                          both provided dimensions.
-                          <br />
-                          <span className='text-slate-800'>"Inside":</span>
-                          Preserving aspect ratio, resize the image to be as
-                          large as possible while ensuring its dimensions are
-                          less than or equal to both those specified.
-                          <br />
-                          <span className='text-slate-800'>"Outside":</span>
-                          Preserving aspect ratio, resize the image to be as
-                          small as possible while ensuring its dimensions are
-                          greater than or equal to both those specified.
-                        </label>
+                  <div className='relative p-2 border-b border-solid'>
+                    <div className='grid items-center justify-center md:grid-cols-2 px-4'>
+                      <div className='flex md:justify-between pt-2 pb-6 px-4 '>
+                        <p className='text-lg text-slate-600 pt-3 w-[53px]'>
+                          Width
+                        </p>
+                        <div className='flex flex-col px-3'>
+                          <input
+                            id='width'
+                            type='number'
+                            className='p-3 flex md:w-[260px] border rounded mb-1'
+                            value={width}
+                            onChange={handleWidthChange}
+                          />
+                          <label
+                            htmlFor='width'
+                            className='text-sm text-slate-400'>
+                            Output width in pixels.
+                          </label>
+                        </div>
                       </div>
-                    </div>
-                    <div className='flex md:mx-0 mx-auto md:justify-between pt-2 pb-6 md:px-4'>
-                      <p className='text-lg text-slate-600 pt-3 w-[53px]'>
-                        Strip
-                      </p>
-                      <div className='flex  flex-col px-3'>
-                        <div className='w-[320px]  md:w-[260px]'>
-                          <div className='flex flex-row items-center '>
-                            <label
-                              htmlFor='stripChoice1'
-                              className='w-[23px] mr-6'>
-                              Yes
-                            </label>
-                            <input
-                              type='radio'
-                              id='stripChoice1'
-                              name='strop'
-                              value={Strip.YES}
-                              checked={strip === Strip.YES}
-                              onChange={handleStripChange}
-                            />
-                          </div>
-
-                          <div className='flex flex-row items-center'>
-                            <label
-                              htmlFor='contactChoice2'
-                              className='w-[23px] mr-6'>
-                              No
-                            </label>
-
-                            <input
-                              type='radio'
-                              id='contactChoice2'
-                              name='strop'
-                              value={Strip.NO}
-                              checked={strip === Strip.NO}
-                              onChange={handleStripChange}
-                            />
-                          </div>
-
-                          <p className='text-xs text-slate-400 mt-2'>
-                            Remove any metadata such as EXIF data.
-                          </p>
+                      <div className='flex md:justify-between pt-2 pb-6 px-4'>
+                        <p className='text-lg text-slate-600 pt-3 w-[53px]'>
+                          Height
+                        </p>
+                        <div className='flex flex-col px-3'>
+                          <input
+                            id='height'
+                            type='number'
+                            className='p-3 flex md:w-[260px] border rounded mb-1'
+                            value={height}
+                            onChange={handleHeightChange}
+                          />
+                          <label
+                            htmlFor='height'
+                            className='text-sm text-slate-400'>
+                            Output height in pixels.
+                          </label>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                  <div className='p-2 border-b border-solid'>
+                    <div className='grid md:grid-cols-2  md:px-4'>
+                      <div className='flex md:justify-between pt-2 pb-6 md:px-4  mx-auto md:mx-0'>
+                        <p className='text-lg text-slate-600 pt-3 w-[53px] mr-2'>
+                          Fit
+                        </p>
+                        <div className='flex flex-col md:px-3'>
+                          <select
+                            value={fit}
+                            onChange={handleFitChange}
+                            id='select'
+                            className='p-3 flex w-[320px] md:w-[260px]  border rounded mb-1 bg-white'>
+                            <option value={Fit.COVER}>cover</option>
+                            <option value={Fit.CONTAIN}>contain</option>
+                            <option value={Fit.FILL}>fill</option>
+                            <option value={Fit.INSIDE}>inside</option>
+                            <option value={Fit.OUTSIDE}>outside</option>
+                          </select>
+                          <label
+                            htmlFor='fit'
+                            className='text-xs text-slate-400 w-[320px] md:w-[260px]'>
+                            Sets the mode of resizing the image.
+                            <br />
+                            <span className='text-slate-800'>“Cover”:</span>
+                            Preserving aspect ratio, attempt to ensure the image
+                            covers both provided dimensions by cropping/clipping
+                            to fit. <br />
+                            <span className='text-slate-800'>“Contain”:</span>
+                            Preserving aspect ratio, contain within both
+                            provided dimensions using "letterboxing" where
+                            necessary.
+                            <br />
+                            <span className='text-slate-800'>“Fill”: </span>
+                            Ignore the aspect ratio of the input and stretch to
+                            both provided dimensions.
+                            <br />
+                            <span className='text-slate-800'>"Inside":</span>
+                            Preserving aspect ratio, resize the image to be as
+                            large as possible while ensuring its dimensions are
+                            less than or equal to both those specified.
+                            <br />
+                            <span className='text-slate-800'>"Outside":</span>
+                            Preserving aspect ratio, resize the image to be as
+                            small as possible while ensuring its dimensions are
+                            greater than or equal to both those specified.
+                          </label>
+                        </div>
+                      </div>
+                      <div className='flex md:mx-0 mx-auto md:justify-between pt-2 pb-6 md:px-4'>
+                        <p className='text-lg text-slate-600 pt-3 w-[53px]'>
+                          Strip
+                        </p>
+                        <div className='flex  flex-col px-3'>
+                          <div className='w-[320px]  md:w-[260px]'>
+                            <div className='flex flex-row items-center '>
+                              <label
+                                htmlFor='stripChoice1'
+                                className='w-[23px] mr-6'>
+                                Yes
+                              </label>
+                              <input
+                                type='radio'
+                                id='stripChoice1'
+                                name='strop'
+                                value={Strip.YES}
+                                checked={strip === Strip.YES}
+                                onChange={handleStripChange}
+                              />
+                            </div>
 
-                <div className='flex items-center justify-between p-6 border-t border-solid border-blueGray-200 rounded-b'>
-                  <button
-                    onClick={() => {
-                      applySettingsToAllFiles(file)
-                      setShowModal(false)
-                    }}
-                    className='bg-green-600 hover:bg-green-800 text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1'>
-                    Apply to all
-                  </button>
-                  <div className='flex items-center '>
+                            <div className='flex flex-row items-center'>
+                              <label
+                                htmlFor='contactChoice2'
+                                className='w-[23px] mr-6'>
+                                No
+                              </label>
+
+                              <input
+                                type='radio'
+                                id='contactChoice2'
+                                name='strop'
+                                value={Strip.NO}
+                                checked={strip === Strip.NO}
+                                onChange={handleStripChange}
+                              />
+                            </div>
+
+                            <p className='text-xs text-slate-400 mt-2'>
+                              Remove any metadata such as EXIF data.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='flex items-center justify-between p-6 border-t border-solid border-blueGray-200 rounded-b'>
                     <button
-                      className='text-red-500 hover:bg-red-600 hover:text-white hover:rounded background-transparent font-bold uppercase px-6 py-3 text-sm mr-1 mb-1'
-                      type='button'
-                      onClick={() => setShowModal(false)}>
-                      Close
+                      onClick={() => {
+                        applySettingsToAllFiles(file)
+                        setShowModal(false)
+                      }}
+                      className='bg-green-600 hover:bg-green-800 text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1'>
+                      Apply to all
                     </button>
-                    <button
-                      className='bg-green-600 hover:bg-green-800 text-white  font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1 '
-                      type='button'
-                      onClick={() => setShowModal(false)}>
-                      Okay
-                    </button>
+                    <div className='flex items-center '>
+                      <button
+                        className='text-red-500 hover:bg-red-600 hover:text-white hover:rounded background-transparent font-bold uppercase px-6 py-3 text-sm mr-1 mb-1'
+                        type='button'
+                        onClick={() => setShowModal(false)}>
+                        Close
+                      </button>
+                      <button
+                        className='bg-green-600 hover:bg-green-800 text-white  font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1 '
+                        type='button'
+                        onClick={() => setShowModal(false)}>
+                        Okay
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className='opacity-25 fixed inset-0 z-40 bg-black'></div>
-        </div>
-      ) : null}
+            </motion.div>
+            <div className='opacity-25 fixed inset-0 z-40 bg-black'></div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </>
   )
 }
