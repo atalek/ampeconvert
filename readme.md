@@ -29,7 +29,7 @@ CSS**, **Express** , **sharp** , and **AWS S3**.
 1. **Clone the repository.**
 
    ```bash
-   git clone https://github.com/Amphei/ampeconvert.git
+   git clone https://github.com/atalek/ampeconvert.git
 
    ```
 
@@ -87,7 +87,6 @@ CSS**, **Express** , **sharp** , and **AWS S3**.
 
 ## Author
 
-Github [@Amphei](https://github.com/Amphei) <br> Linkedin:
+Github [@atalek](https://github.com/atalek) <br> Linkedin:
 [@Aleksandar Atanasovski](https://www.linkedin.com/in/aleksandar-atanasovski-16b123263/)
-<br> Portfolio:
-[https://atal-portfolio.pages.dev/](https://atal-portfolio.pages.dev/)
+<br> Portfolio: [https://www.atalek.com/](https://www.atalek.com/)
