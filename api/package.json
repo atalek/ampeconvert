@@ -15,7 +15,7 @@
   "author": "Aleksandar Atanasovski",
   "license": "MIT",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.502.0",
+    "@aws-sdk/client-s3": "^3.629.0",
     "ampeconvert": "file:..",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
