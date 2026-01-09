@@ -19,7 +19,7 @@
     "ampeconvert": "file:..",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
-    "express": "^4.21.2",
+    "express": "^4.22.1",
     "multer": "2.0.2",
     "multer-s3": "^3.0.1",
     "sharp": "^0.33.2"
